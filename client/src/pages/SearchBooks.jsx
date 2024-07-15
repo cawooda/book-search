@@ -93,7 +93,7 @@ const SearchBooks = () => {
       //get all the ids from localstorage and set state to include the new one.
       setSavedBookIds([...bookIds, bookToSave.bookId]);
       //update localstorage
-      saveBookIds(savedBookIds);
+      saveBookIds([...bookIds, bookToSave.bookId]);
     } catch (error) {
       console.log(error);
     }

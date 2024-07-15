@@ -34,11 +34,10 @@ const SavedBooks = () => {
 
   useEffect(() => {
     if (!queryLoading && !queryError && queryData) {
-      console.log("loading finished");
-      console.log(queryData);
+      getSavedBookIds();
       setUserData(queryData.getMe);
     }
-  }, [queryData, queryLoading, queryError]);
+  }, [queryData, queryLoading, queryError, userData]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -53,8 +52,8 @@ const SavedBooks = () => {
         bookId,
       },
     });
-    console.log("user data pre", userData.savedBooks);
-    removeBookId(bookId);
+
+    await removeBookId(bookId);
 
     setUserData((prevUserData) => ({
       ...prevUserData,

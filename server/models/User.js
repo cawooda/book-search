@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
+const { signToken } = require("../utils/auth");
 
 // import schema from Book.js
 const bookSchema = require("./Book");
@@ -46,6 +47,14 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.isCorrectPassword = async function (password) {
   console.log(bcrypt.compare(password, this.password));
   return bcrypt.compare(password, this.password);
+};
+
+//creates a token for the user
+userSchema.methods.createToken = async function (password) {
+  if (this.isCorrectPassword(password)) {
+    const token = await signToken(this);
+    return token;
+  }
 };
 
 // when we query a user, we'll also get another field called `bookCount` with the number of saved books we have

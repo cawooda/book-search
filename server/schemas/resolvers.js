@@ -15,9 +15,12 @@ const resolvers = {
 
   Mutation: {
     createUser: async (parent, { username, email, password }) => {
-      return User.create({ username, email, password });
+      const user = await User.create({ username, email, password });
+      const token = await user.createToken(user);
+      return { token };
     },
     loginUser: async (parent, { username, email, password }) => {
+      console.log("login user reached");
       if (!username && !email) {
         //check if either are provided and throw error
         throw new Error("Please provide a username or email");
@@ -26,16 +29,10 @@ const resolvers = {
       const user = await User.findOne({
         $or: [{ username: username }, { email: email }],
       }); //try to find user
-      const passwordIsCorrect = await user.isCorrectPassword(password);
-      if (!user) {
-        //handle no user found
-        throw new Error("user not found");
-      } else if (passwordIsCorrect) {
-        //checks if password is correct before returning user
-        return user;
-      } else {
-        throw new Error("password incorrect");
-      }
+
+      const token = await user.createToken(password);
+
+      return { user, token } || "error";
     },
     addBook: async (
       parent,
