@@ -2,134 +2,23 @@
 
 ## user story
 
-GIVEN a book search engine
-WHEN I load the search engine
-THEN I am presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button
-WHEN I click on the Search for Books menu option
-THEN I am presented with an input field to search for books and a submit button
-WHEN I am not logged in and enter a search term in the input field and click the submit button
-THEN I am presented with several search results, each featuring a book’s title, author, description, image, and a link to that book on the Google Books site
-WHEN I click on the Login/Signup menu option
-THEN a modal appears on the screen with a toggle between the option to log in or sign up
-WHEN the toggle is set to Signup
-THEN I am presented with three inputs for a username, an email address, and a password, and a signup button
-WHEN the toggle is set to Login
-THEN I am presented with two inputs for an email address and a password and login button
-WHEN I enter a valid email address and create a password and click on the signup button
-THEN my user account is created and I am logged in to the site
-WHEN I enter my account’s email address and password and click on the login button
-THEN I the modal closes and I am logged in to the site
-WHEN I am logged in to the site
-THEN the menu options change to Search for Books, an option to see my saved books, and Logout
-WHEN I am logged in and enter a search term in the input field and click the submit button
-THEN I am presented with several search results, each featuring a book’s title, author, description, image, and a link to that book on the Google Books site and a button to save a book to my account
-WHEN I click on the Save button on a book
-THEN that book’s information is saved to my account
-WHEN I click on the option to see my saved books
-THEN I am presented with all of the books I have saved to my account, each featuring the book’s title, author, description, image, and a link to that book on the Google Books site and a button to remove a book from my account
-WHEN I click on the Remove button on a book
-THEN that book is deleted from my saved books list
-WHEN I click on the Logout button
-THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button
-
 ## Requirements
 
-You’ll need to complete the following tasks in each of these back-end files:
+The requirements for this project were to upgrade an existing authentication using routes to one that is used with graphql.
 
-auth.js: Update the auth middleware function to work with the GraphQL API.
+## GraphQL Environment Back End
 
-server.js: Implement the Apollo Server and apply it to the Express server as middleware.
+graphql requires the installation of a graphql server using Appolo Servier. This is located in server.js. Along with this, predefined typeDefs and resolvers are imported for use with GraphQl.
+An Apollo server is started. There is a configuration in vite required for proxy requests to graphql also. This ensures no CORS issues.
+GraphQL request are handled by resolvers which allow for queries and muations on the Mongoose Models, and these are defined in the resolvers.
 
-Schemas directory:
+## GraphQL Environment Back End
 
-<!-- index.js: Export your typeDefs and resolvers. -->
+On the front end, we can rely on some of the same functions as previous requests, but mainly we are moving requests to the back end into the useQuery and useMutation hooks that are present in react's environment. This is done in the respective compnents and pages.
+In this project an Auth service is defined and imported to handle authentication tasks.
+When a user logs in, the Auth services login is called which writes the token to local storage and resets the route to the home page.
+In the login component a similar process creates a newUserAuth which provides us a token which is then sent to the existing Auth service to store in local storage with `Auth.login(newUserAuth.data.loginUser.token);`
 
-<!-- resolvers.js: Define the query and mutation functionality to work with the Mongoose models. -->
+In both the SearchBooks and SavedBooks, there are mutations defined that provide the connection to the back end. With graphql, we make use of utils/ called mutation.js and query.js
 
-HINT
-Use the functionality in the user-controller.js as a guide.
-
-typeDefs.js: Define the necessary Query and Mutation types:
-
-Query type:
-
-<!-- me: Which returns a User type. -->
-
-Mutation type:
-
-<!-- login: Accepts an email and password as parameters; returns an Auth type. -->
-
-<!-- addUser: Accepts a username, email, and password as parameters; returns an Auth type. -->
-
-<!-- saveBook: Accepts a book author's array, description, title, bookId, image, and link as parameters; returns a User type. (Look into creating what's known as an input type to handle all of these parameters!) -->
-
-<!-- removeBook: Accepts a book's bookId as a parameter; returns a User type. -->
-
-User type:
-
-\_id
-
-username
-
-email
-
-bookCount
-
-savedBooks (This will be an array of the Book type.)
-
-Book type:
-
-bookId (Not the \_id, but the book's id value returned from Google's Book API.)
-
-authors (An array of strings, as there may be more than one author.)
-
-description
-
-title
-
-image
-
-link
-
-Auth type:
-
-token
-
-user (References the User type.)
-
-Front-End Specifications
-You'll need to create the following front-end files:
-
-queries.js: This will hold the query GET_ME, which will execute the me query set up using Apollo Server.
-
-mutations.js:
-
-<!-- LOGIN_USER will execute the loginUser mutation set up using Apollo Server. -->
-
-<!-- ADD_USER will execute the addUser mutation. -->
-
-<!-- SAVE_BOOK will execute the saveBook mutation. -->
-
-<!-- REMOVE_BOOK will execute the removeBook mutation. -->
-
-Additionally, you’ll need to complete the following tasks in each of these front-end files:
-
-<!-- App.jsx: Create an Apollo Provider to make every request work with the Apollo server. -->
-
-SearchBooks.jsx:
-
-<!-- Use the Apollo useMutation() Hook to execute the SAVE_BOOK mutation in the handleSaveBook() function instead of the saveBook() function imported from the API file. -->
-
-<!-- Make sure you keep the logic for saving the book's ID to state in the try...catch block! -->
-
-SavedBooks.jsx:
-
-<!-- Remove the useEffect() Hook that sets the state for UserData. -->
-
-<!-- Instead, use the useQuery() Hook to execute the GET_ME query on load and save it to a variable named userData. -->
-
-<!-- Use the useMutation() Hook to execute the REMOVE_BOOK mutation in the handleDeleteBook() function instead of the deleteBook() function that's imported from API file. (Make sure you keep the removeBookId() function in place!) -->
-
-<!-- SignupForm.jsx: Replace the addUser() functionality imported from the API file with the ADD_USER mutation functionality. -->
-
-<!-- LoginForm.jsx: Replace the loginUser() functionality imported from the API file with the LOGIN_USER mutation functionality. -->
+These are made use of in the hooks in each component. For example SearchBooks has an ADD_BOOK mutation. SavedBooks makes use of a mutation which removes a book from a users list.

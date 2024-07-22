@@ -24,7 +24,9 @@ const userSchema = new Schema(
     },
     // set savedBooks to be an array of data that adheres to the bookSchema
     savedBooks: [bookSchema],
+    token: String,
   },
+
   // set this to use virtual below
   {
     toJSON: {
@@ -53,6 +55,7 @@ userSchema.methods.isCorrectPassword = async function (password) {
 userSchema.methods.createToken = async function (password) {
   if (this.isCorrectPassword(password)) {
     const token = await signToken(this);
+    this.token = token;
     return token;
   }
 };

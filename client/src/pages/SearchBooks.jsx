@@ -72,8 +72,10 @@ const SearchBooks = () => {
     //uses the bookId to find the book out of the searched books array.
 
     // get token and user ID
+
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    const userId = Auth.getProfile().data._id;
+
+    const userId = Auth.getProfile().authenticatedPerson._id;
     if (!token) {
       return false;
     }
@@ -95,6 +97,7 @@ const SearchBooks = () => {
       //update localstorage
       saveBookIds([...bookIds, bookToSave.bookId]);
     } catch (error) {
+      console.log("an error occured");
       console.log(error);
     }
   };

@@ -24,8 +24,9 @@ const SavedBooks = () => {
     },
   });
   const token = Auth.loggedIn() ? Auth.getToken() : null;
-  const userId = Auth.getProfile().data._id;
-  console.log(userId);
+
+  const userId = Auth.getProfile().authenticatedPerson._id;
+
   const {
     loading: queryLoading,
     data: queryData,
@@ -42,7 +43,7 @@ const SavedBooks = () => {
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    const userId = Auth.getProfile().data._id;
+    const userId = Auth.getProfile().authenticatedUser._id;
     if (!token) {
       return false;
     }

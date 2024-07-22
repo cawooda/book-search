@@ -9,7 +9,8 @@ type bookSchema {
 }
 
 type Auth {
-  user: User
+  _id: ID
+  username: String
   token: String
 }
 
@@ -18,6 +19,7 @@ type User {
     username: String
     email: String
     savedBooks: [bookSchema]
+    token:String
   }
 
     input BookInput {

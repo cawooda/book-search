@@ -5,6 +5,7 @@ const routes = require("./routes");
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const { typeDefs, resolvers } = require("./schemas");
+const { authMiddleware } = require("./utils/auth");
 
 const server = new ApolloServer({
   typeDefs,
@@ -19,7 +20,9 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  app.use("/graphql", expressMiddleware(server));
+  //setup middleware to handle any requests through grapghql through expressmiddlewhere and the Apollo server.
+  //Context is handled by Auth Middleware which is set as an option object.
+  app.use("/graphql", expressMiddleware(server, { context: authMiddleware }));
 
   // if we're in production, serve client/build as static assets
   if (process.env.NODE_ENV === "production") {

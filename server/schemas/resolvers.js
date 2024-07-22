@@ -17,7 +17,7 @@ const resolvers = {
     createUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
       const token = await user.createToken(user);
-      return { token };
+      return user;
     },
     loginUser: async (parent, { username, email, password }) => {
       console.log("login user reached");
@@ -32,7 +32,7 @@ const resolvers = {
 
       const token = await user.createToken(password);
 
-      return { user, token } || "error";
+      return user || "error";
     },
     addBook: async (
       parent,
