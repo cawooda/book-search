@@ -11,22 +11,15 @@ export const LOGIN_USER = gql`
 `;
 
 export const ADD_USER = gql`
-  mutation Mutation($userId: ID!, $bookId: ID!) {
-    removeBook(userId: $userId, bookId: $bookId) {
+  mutation Mutation($username: String!, $email: String!, $password: String!) {
+    createUser(username: $username, email: $email, password: $password) {
       _id
       username
-      email
-      savedBooks {
-        authors
-        description
-        bookId
-        image
-        link
-        title
-      }
+      token
     }
   }
 `;
+// token removed from above
 
 export const ADD_BOOK = gql`
   mutation Mutation(

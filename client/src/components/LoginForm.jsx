@@ -12,9 +12,9 @@ const LoginForm = () => {
   const [
     loginUser,
     {
-      loading: mutationLoginUser,
-      data: mutationLoginUserData,
-      error: mutationLoginUserError,
+      loading: loginMutationLoading,
+      data: loginMutationData,
+      error: loginMutationError,
     },
   ] = useMutation(LOGIN_USER, {
     onError: (err) => {
@@ -44,6 +44,7 @@ const LoginForm = () => {
     }
 
     try {
+      //try create a new user with the login mutation using formdata
       const newUserAuth = await loginUser({
         variables: {
           username: userFormData.username,
@@ -51,7 +52,7 @@ const LoginForm = () => {
           password: userFormData.password,
         },
       });
-
+      //locally log the user in using he token recieved from the user object obtained form the back end.
       Auth.login(newUserAuth.data.loginUser.token);
     } catch (err) {
       console.error(err);

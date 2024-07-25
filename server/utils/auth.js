@@ -3,7 +3,7 @@ const { GraphQLError } = require("graphql");
 const jwt = require("jsonwebtoken");
 
 // set token secret and expiration date
-const secret = process.env.SECRET;
+const secret = "this is a secret code";
 
 const expiration = "2h";
 
@@ -16,7 +16,6 @@ module.exports = {
   }),
 
   authMiddleware: function ({ req }) {
-    console.log(req.query.token);
     // allows token to be sent via  req.query or headers
     let token = req.body.token || req.query.token || req.headers.authorization;
 

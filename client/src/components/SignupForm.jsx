@@ -48,9 +48,16 @@ const SignupForm = () => {
       event.stopPropagation();
     }
     try {
-      const newUserAuth = await addUser({ variables: { userFormData } });
-
-      Auth.login(newUserAuth.token);
+      //try to create a new user from the form data
+      const newUserAuth = await addUser({
+        variables: {
+          email: userFormData.email,
+          username: userFormData.username,
+          password: userFormData.password,
+        },
+      });
+      //locally login the user with their token recieved out of the user object obtained from the back end.
+      Auth.login(newUserAuth.data.createUser.token);
     } catch (error) {
       console.log(error);
     }

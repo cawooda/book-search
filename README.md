@@ -22,3 +22,11 @@ In the login component a similar process creates a newUserAuth which provides us
 In both the SearchBooks and SavedBooks, there are mutations defined that provide the connection to the back end. With graphql, we make use of utils/ called mutation.js and query.js
 
 These are made use of in the hooks in each component. For example SearchBooks has an ADD_BOOK mutation. SavedBooks makes use of a mutation which removes a book from a users list.
+
+## Challentes
+
+It was a challenge to get a grasp of the movement between front and back end to see what is being sent what is being recieved and how to know what each method, funciton or resolver is recieving and expecting.
+
+The network tooks came in handy for this.
+
+SOme of the error messages in react made it difficult to know what was wrong and it was quite frustrating sometimes not knowing how to fix it.

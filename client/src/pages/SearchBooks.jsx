@@ -36,11 +36,9 @@ const SearchBooks = () => {
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
     if (!searchInput) {
       return false;
     }
-
     try {
       const response = await searchGoogleBooks(searchInput);
 
@@ -49,7 +47,7 @@ const SearchBooks = () => {
       }
 
       const { items } = await response.json();
-
+      console.log("items", items);
       const bookData = items.map((book) => ({
         bookId: book.id,
         authors: book.volumeInfo.authors || ["No author to display"],
